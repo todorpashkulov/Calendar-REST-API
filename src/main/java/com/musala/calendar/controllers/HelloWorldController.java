@@ -13,7 +13,7 @@ public class HelloWorldController {
 
     @GetMapping(value = "get")
     public String hello() {
-        return "Hello";
+        return "Hello ";
     }
 
     @PostMapping(value = "post")
