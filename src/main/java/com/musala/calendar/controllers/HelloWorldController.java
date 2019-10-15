@@ -1,8 +1,10 @@
 package com.musala.calendar.controllers;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/hello/")
@@ -13,7 +15,6 @@ public class HelloWorldController {
     public String hello() {
         return "Hello";
     }
-
 
     @PostMapping(value = "post")
     public String postHello() {
