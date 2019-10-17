@@ -13,7 +13,6 @@ import com.musala.calendar.repositories.BlogRepository;
 @RestController
 @RequestMapping("")
 public class BlogController {
-
     @Autowired
     BlogRepository blogRepository;
 
@@ -21,7 +20,6 @@ public class BlogController {
     public List<Blog> index() {
         return blogRepository.findAll();
     }
-
 
     @PostMapping("/blog")
     public Blog create(@RequestBody Map<String, String> body) {
