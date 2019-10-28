@@ -27,6 +27,17 @@ public class EventController {
 
     @PostMapping("/event")
     public Event create(@RequestBody Event event) {
-        return eventService.createEvent(event);
+        return eventService.create(event);
     }
+
+    @PutMapping("/event/{id}")
+    public Event update(@PathVariable Integer id, @RequestBody Event event) {
+        return eventService.update(id, event);
+    }
+
+    @DeleteMapping("/event/{id}")
+    public void delete(@PathVariable Integer id) {
+        eventService.delete(id);
+    }
+
 }
