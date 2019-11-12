@@ -4,6 +4,8 @@ package com.musala.calendar.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.musala.calendar.models.User;
@@ -27,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User create(@RequestBody User user) {
-        return userService.create(user);
+    public ResponseEntity<User> create(@RequestBody User user) {
+        return new ResponseEntity<User>(userService.create(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/user/{id}")

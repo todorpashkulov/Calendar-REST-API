@@ -2,6 +2,7 @@ package com.musala.calendar.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,6 +18,47 @@ public class Event {
     private LocalDateTime endDate;
     private EventType eventType;
     private User user;
+
+    public Event() {
+    }
+
+    public Event(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Event(String name, EventType eventType, User user) {
+        this.name = name;
+        this.eventType = eventType;
+        this.user = user;
+    }
+
+    public Event(Integer id, String name, EventType eventType, User user) {
+        this.id = id;
+        this.name = name;
+        this.eventType = eventType;
+        this.user = user;
+    }
+
+    public Event(String name) {
+        this.name = name;
+    }
+
+    public Event(Integer id,
+                 String name,
+                 String description,
+                 String location,
+                 LocalDateTime startDate,
+                 LocalDateTime endDate, EventType eventType, User user) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.eventType = eventType;
+        this.user = user;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,5 +148,25 @@ public class Event {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id) &&
+                Objects.equals(name, event.name) &&
+                Objects.equals(description, event.description) &&
+                Objects.equals(location, event.location) &&
+                Objects.equals(startDate, event.startDate) &&
+                Objects.equals(endDate, event.endDate) &&
+                Objects.equals(eventType, event.eventType) &&
+                Objects.equals(user, event.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, location, startDate, endDate, eventType, user);
     }
 }

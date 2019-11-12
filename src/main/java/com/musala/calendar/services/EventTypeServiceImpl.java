@@ -11,10 +11,14 @@ import com.musala.calendar.repositories.EventTypeRepository;
 
 @Service
 public class EventTypeServiceImpl implements EventTypeService {
-    private static final String NO_EVENT_TYPE_FOUND_MESSAGE = "Can't find eventType with ID: ";
+    private static final String ERROR_MESSAGE = "Can't find eventType with ID: ";
 
     @Autowired
     EventTypeRepository eventTypeRepository;
+
+    public static String getErrorMessage() {
+        return ERROR_MESSAGE;
+    }
 
     @Override
     public List<EventType> findAll() {
@@ -25,7 +29,7 @@ public class EventTypeServiceImpl implements EventTypeService {
     public EventType findById(Integer id) {
         return eventTypeRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundInDBException(NO_EVENT_TYPE_FOUND_MESSAGE + id));
+                .orElseThrow(() -> new NotFoundInDBException(ERROR_MESSAGE + id));
     }
 
     @Override
@@ -35,8 +39,13 @@ public class EventTypeServiceImpl implements EventTypeService {
 
     @Override
     public EventType update(Integer id, EventType updatedEventType) {
-        updatedEventType.setId(id);
-        return eventTypeRepository.save(updatedEventType);
+        if (eventTypeRepository.existsById(id)) {
+            updatedEventType.setId(id);
+            return eventTypeRepository.save(updatedEventType);
+        } else {
+            throw new NotFoundInDBException(ERROR_MESSAGE + id);
+        }
+
     }
 
     @Override
@@ -44,7 +53,7 @@ public class EventTypeServiceImpl implements EventTypeService {
         if (eventTypeRepository.existsById(id)) {
             eventTypeRepository.deleteById(id);
         } else {
-            throw new NotFoundInDBException(NO_EVENT_TYPE_FOUND_MESSAGE + id);
+            throw new NotFoundInDBException(ERROR_MESSAGE + id);
         }
     }
 }

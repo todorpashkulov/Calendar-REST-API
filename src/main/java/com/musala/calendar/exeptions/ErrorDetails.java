@@ -12,7 +12,7 @@ public class ErrorDetails {
     private String message;
     private String details;
 
-    ErrorDetails(LocalDateTime currentTime, HttpStatus status, String message, String details) {
+    public ErrorDetails(LocalDateTime currentTime, HttpStatus status, String message, String details) {
         this.currentTime = currentTime;
         this.status = status.toString();
         this.message = message;

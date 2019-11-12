@@ -4,6 +4,8 @@ package com.musala.calendar.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.musala.calendar.models.EventType;
@@ -27,8 +29,8 @@ public class EventTypeController {
     }
 
     @PostMapping("/eventType")
-    public EventType create(@RequestBody EventType eventType) {
-        return eventTypeService.create(eventType);
+    public ResponseEntity<EventType> create(@RequestBody EventType eventType) {
+        return new ResponseEntity<EventType>(eventTypeService.create(eventType), HttpStatus.CREATED);
     }
 
     @PutMapping("/eventType/{id}")
