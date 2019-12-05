@@ -11,10 +11,14 @@ import com.musala.calendar.repositories.EventRepository;
 
 @Service
 public class EventServiceImpl implements EventService {
-    private static final String NO_EVENT_FOUND_MESSAGE = "Can't find event with ID: ";
+    private static final String ERROR_MESSAGE = "Can't find event with ID: ";
 
     @Autowired
     EventRepository eventRepository;
+
+    public static String getErrorMessage() {
+        return ERROR_MESSAGE;
+    }
 
     @Override
     public List<Event> findAll() {
@@ -25,7 +29,7 @@ public class EventServiceImpl implements EventService {
     public Event findById(Integer id) {
         return eventRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundInDBException(NO_EVENT_FOUND_MESSAGE + id));
+                .orElseThrow(() -> new NotFoundInDBException(ERROR_MESSAGE + id));
     }
 
     @Override
@@ -35,8 +39,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event update(Integer id, Event updatedEvent) {
-        updatedEvent.setId(id);
-        return eventRepository.save(updatedEvent);
+        if (eventRepository.existsById(id)) {
+            updatedEvent.setId(id);
+            return eventRepository.save(updatedEvent);
+        } else {
+            throw new NotFoundInDBException(ERROR_MESSAGE + id);
+        }
     }
 
     @Override
@@ -44,7 +52,7 @@ public class EventServiceImpl implements EventService {
         if (eventRepository.existsById(id)) {
             eventRepository.deleteById(id);
         } else {
-            throw new NotFoundInDBException(NO_EVENT_FOUND_MESSAGE + id);
+            throw new NotFoundInDBException(ERROR_MESSAGE + id);
         }
     }
 }

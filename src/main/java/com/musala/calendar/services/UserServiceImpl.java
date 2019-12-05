@@ -17,6 +17,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    public static String getErrorMessage() {
+        return ERROR_MESSAGE;
+    }
+
     @Override
     public List<User> findAll() {
         return (List<User>) userRepository.findAll();
@@ -36,25 +40,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(Integer id, User updatedUser) {
-        User oldUser = userRepository.findById(id).get();
-        updatedUser.setId(id);
-        updatedUser.setEmail(updatedUser.getEmail() == null
-                ? oldUser.getEmail()
-                : updatedUser.getEmail());
-        updatedUser.setFirstName(updatedUser.getFirstName() == null
-                ? oldUser.getFirstName()
-                : updatedUser.getFirstName());
-        updatedUser.setLastName(updatedUser.getLastName() == null
-                ? oldUser.getLastName()
-                : updatedUser.getFirstName());
-        updatedUser.setPassword(updatedUser.getLastName() == null
-                ? oldUser.getLastName()
-                : updatedUser.getFirstName());
-        if (updatedUser.getEventList() == null) {
-            updatedUser.setEventList(new ArrayList<>());
+        if (userRepository.existsById(id)) {
+            User oldUser = userRepository.findById(id).get();
+            updatedUser.setId(id);
+            updatedUser.setEmail(updatedUser.getEmail() == null
+                    ? oldUser.getEmail()
+                    : updatedUser.getEmail());
+            updatedUser.setFirstName(updatedUser.getFirstName() == null
+                    ? oldUser.getFirstName()
+                    : updatedUser.getFirstName());
+            updatedUser.setLastName(updatedUser.getLastName() == null
+                    ? oldUser.getLastName()
+                    : updatedUser.getFirstName());
+            updatedUser.setPassword(updatedUser.getLastName() == null
+                    ? oldUser.getLastName()
+                    : updatedUser.getFirstName());
+            if (updatedUser.getEventList() == null) {
+                updatedUser.setEventList(new ArrayList<>());
+            }
+            updatedUser.getEventList().addAll(oldUser.getEventList());
+            return userRepository.save(updatedUser);
+        } else {
+            throw new NotFoundInDBException(ERROR_MESSAGE + id);
         }
-        updatedUser.getEventList().addAll(oldUser.getEventList());
-        return userRepository.save(updatedUser);
     }
 
     @Override

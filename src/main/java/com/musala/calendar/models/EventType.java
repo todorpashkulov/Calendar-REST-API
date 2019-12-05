@@ -2,6 +2,7 @@ package com.musala.calendar.models;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,6 +14,26 @@ public class EventType {
     private String name;
     private String info;
     private List<Event> eventList;
+
+    public EventType() {
+    }
+
+    public EventType(String name) {
+        this.name = name;
+    }
+
+    public EventType(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public EventType(Integer id, String name, String info, List<Event> eventList) {
+        this.id = id;
+        this.name = name;
+        this.info = info;
+        this.eventList = eventList;
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +65,7 @@ public class EventType {
     }
 
     @OneToMany(mappedBy = "eventType")
-    @JsonIgnoreProperties("event")
+    @JsonIgnoreProperties(value = "event", allowSetters = true)
     public List<Event> getEventList() {
         return eventList;
     }
@@ -60,5 +81,20 @@ public class EventType {
                 ", name='" + name + '\'' +
                 ", info='" + info + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventType eventType = (EventType) o;
+        return Objects.equals(id, eventType.id) &&
+                Objects.equals(name, eventType.name) &&
+                Objects.equals(info, eventType.info);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, info, eventList);
     }
 }
