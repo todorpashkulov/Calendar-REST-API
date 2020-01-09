@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 public class User {
 
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
+    private String username;
     private String password;
+    private UserRole userRole;
     private List<Event> eventList;
 
     public User() {
@@ -29,11 +32,18 @@ public class User {
         this.firstName = firstName;
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName,
+                String lastName,
+                String email,
+                String username,
+                String password,
+                UserRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
         this.password = password;
+        this.userRole = userRole;
     }
 
     @Id
@@ -74,7 +84,17 @@ public class User {
         this.email = email;
     }
 
+    @Column(name = "USERNAME")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Column(name = "PASSWORD")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;
     }
@@ -93,6 +113,17 @@ public class User {
         this.eventList = eventList;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "USER_ROLES_ID")
+    @JsonIgnoreProperties("userList")
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -100,6 +131,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 
@@ -111,7 +143,8 @@ public class User {
         return Objects.equals(id, user.id) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email);
+                Objects.equals(email, user.email) &&
+                Objects.equals(username, user.username);
     }
 
     @Override

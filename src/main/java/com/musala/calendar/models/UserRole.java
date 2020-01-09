@@ -7,31 +7,28 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "EVENT_TYPES")
-public class EventType {
-
+@Table(name = "USER_ROLES")
+public class UserRole {
     private Integer id;
     private String name;
-    private String info;
-    private List<Event> eventList;
+    private List<User> userList;
 
-    public EventType() {
+    public UserRole() {
     }
 
-    public EventType(String name) {
+    public UserRole(String name) {
         this.name = name;
     }
 
-    public EventType(Integer id, String name) {
+    public UserRole(Integer id, String name, List<User> userList) {
         this.id = id;
         this.name = name;
+        this.userList = userList;
     }
 
-    public EventType(Integer id, String name, String info, List<Event> eventList) {
+    public UserRole(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.info = info;
-        this.eventList = eventList;
     }
 
     @Id
@@ -54,31 +51,26 @@ public class EventType {
         this.name = name;
     }
 
-    @Column(name = "INFO")
-    public String getInfo() {
-        return info;
+    @OneToMany(mappedBy = "userRole", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = "userRole", allowSetters = true)
+    public List<User> getUserList() {
+        return userList;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
-    @OneToMany(mappedBy = "eventType")
-    @JsonIgnoreProperties(value = "event", allowSetters = true)
-    public List<Event> getEventList() {
-        return eventList;
-    }
-
-    public void setEventList(List<Event> eventList) {
-        this.eventList = eventList;
+    public String roleString() {
+        return name;
     }
 
     @Override
     public String toString() {
-        return "EventType{" +
+        return "UserRole{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", info='" + info + '\'' +
+                ", userList=" + userList +
                 '}';
     }
 
@@ -86,14 +78,13 @@ public class EventType {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EventType eventType = (EventType) o;
-        return Objects.equals(id, eventType.id) &&
-                Objects.equals(name, eventType.name) &&
-                Objects.equals(info, eventType.info);
+        UserRole userRole = (UserRole) o;
+        return Objects.equals(id, userRole.id) &&
+                Objects.equals(name, userRole.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, info, eventList);
+        return Objects.hash(id, name, userList);
     }
 }

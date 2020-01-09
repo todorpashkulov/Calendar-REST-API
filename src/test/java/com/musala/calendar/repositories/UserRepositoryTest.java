@@ -41,8 +41,8 @@ class UserRepositoryTest {
     void whenCallingSaveReturnPersistedUser() {
         User user = new User(7, "USER7");
         userRepository.save(user);
-        User savedEvent = userRepository.findById(7).get();
-        assertThat(savedEvent).isEqualTo(user);
+        User savedUser = userRepository.findById(7).get();
+        assertThat(savedUser).isEqualTo(user);
     }
 
     @Test

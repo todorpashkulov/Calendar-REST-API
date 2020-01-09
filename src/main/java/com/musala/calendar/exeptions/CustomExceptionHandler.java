@@ -19,4 +19,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getLocalizedMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ErrorDetails> handleException(Exception ex) {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST,
+                "Error",
+                ex.getLocalizedMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }

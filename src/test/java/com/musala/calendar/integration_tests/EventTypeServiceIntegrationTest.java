@@ -125,7 +125,7 @@ class EventTypeServiceIntegrationTest {
     @Test
     @DisplayName("return HTTP:Status 404 when eventType for update isn't found in DB")
     void whenCantFindEventTypeToUpdateThrowException() throws Exception {
-        EventType eventType = new EventType(4, "EVENT_FOR_PUT");
+        EventType eventType = new EventType(4, "EVENT_TYPE_FOR_PUT");
         MvcResult mvcResult = mockMvc.perform(put("/api/eventType/{id}", eventType.getId())
                 .content(objectMapper.writeValueAsString(eventType))
                 .contentType(MediaType.APPLICATION_JSON)
