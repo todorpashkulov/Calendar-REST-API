@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = EventController.class)
 @DisplayName("EventController should")
 class EventControllerTest {
-    @Autowired
 
+    @Autowired
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;

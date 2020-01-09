@@ -7,7 +7,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "EVENT")
+@Table(name = "EVENTS")
 public class Event {
 
     private Integer id;

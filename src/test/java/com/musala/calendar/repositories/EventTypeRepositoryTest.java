@@ -41,8 +41,8 @@ class EventTypeRepositoryTest {
     void whenCallingSaveReturnPersistedEventType() {
         EventType eventType = new EventType(7, "EVENT_TYPE7");
         eventTypeRepository.save(eventType);
-        EventType savedEvent = eventTypeRepository.findById(7).get();
-        assertThat(savedEvent).isEqualTo(eventType);
+        EventType savedEventType = eventTypeRepository.findById(7).get();
+        assertThat(savedEventType).isEqualTo(eventType);
     }
 
     @Test

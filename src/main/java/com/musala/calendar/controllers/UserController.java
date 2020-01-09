@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.musala.calendar.dto.AuthenticationRequest;
+import com.musala.calendar.dto.AuthenticationResponse;
 import com.musala.calendar.models.User;
 import com.musala.calendar.services.UserService;
 
@@ -30,7 +32,7 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<User> create(@RequestBody User user) {
-        return new ResponseEntity<User>(userService.create(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/user/{id}")
@@ -42,4 +44,12 @@ public class UserController {
     public void delete(@PathVariable Integer id) {
         userService.delete(id);
     }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws
+            Exception {
+        return new ResponseEntity<>(new AuthenticationResponse(userService.createToken(authenticationRequest)),
+                HttpStatus.OK);
+    }
+
 }
